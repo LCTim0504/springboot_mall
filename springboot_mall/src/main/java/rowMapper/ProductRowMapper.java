@@ -1,5 +1,6 @@
 package rowMapper;
 
+import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -9,11 +10,17 @@ import java.sql.SQLException;
 public class ProductRowMapper implements RowMapper<Product> {
     @Override
     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Product product=new Product();
+        Product product = new Product();
 
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
-        product.setCategory(rs.getString("category"));
+
+//        String categoryStr = rs.getString("category");
+//        //在ProductCategory中 尋找和 categoryStr 相同的值並傳進 category
+//        ProductCategory category = ProductCategory.valueOf(categoryStr);
+//        product.setCategory(category);
+        product.setCategory(ProductCategory.valueOf(rs.getString("category")));
+
         product.setImageUrl(rs.getString("image_url"));
         product.setPrice(rs.getInt("price"));
         product.setStock(rs.getInt("stock"));
