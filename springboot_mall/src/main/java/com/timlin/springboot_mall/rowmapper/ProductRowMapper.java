@@ -1,4 +1,4 @@
-package rowMapper;
+package com.timlin.springboot_mall.rowmapper;
 
 import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.model.Product;
