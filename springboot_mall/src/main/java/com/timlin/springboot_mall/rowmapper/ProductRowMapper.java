@@ -15,10 +15,7 @@ public class ProductRowMapper implements RowMapper<Product> {
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
 
-//        String categoryStr = rs.getString("category");
-//        //在ProductCategory中 尋找和 categoryStr 相同的值並傳進 category
-//        ProductCategory category = ProductCategory.valueOf(categoryStr);
-//        product.setCategory(category);
+        //在ProductCategory中 尋找和 categoryStr 相同的值並傳進 category
         product.setCategory(ProductCategory.valueOf(rs.getString("category")));
 
         product.setImageUrl(rs.getString("image_url"));

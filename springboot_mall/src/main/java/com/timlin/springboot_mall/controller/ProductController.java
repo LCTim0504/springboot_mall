@@ -23,13 +23,30 @@ public class ProductController {
                 ResponseEntity.status(HttpStatus.OK).body(product) :
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
     @PostMapping("/products")
-    public  ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
         //@Valid =>觸發ProductRequest的 @NotNull 註解
 
         Integer productId = productService.createProduct(productRequest);
         Product product = productService.getProductById(productId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Integer productId,
+            @RequestBody @Valid ProductRequest productRequest) {
+
+        //確認Product是否存在
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        productService.updateProduct(productId, productRequest);
+        //將傳回的值返回給前端
+        Product updatedProduct = productService.getProductById(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 }
