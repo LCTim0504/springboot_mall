@@ -3,6 +3,7 @@ package com.timlin.springboot_mall.service.impl;
 import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.dao.ProductDao;
 import com.timlin.springboot_mall.model.Product;
+import com.timlin.springboot_mall.others.ProductQueryParams;
 import com.timlin.springboot_mall.others.ProductRequest;
 import com.timlin.springboot_mall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
-        return productDao.getProducts(category, search);
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 
     @Override

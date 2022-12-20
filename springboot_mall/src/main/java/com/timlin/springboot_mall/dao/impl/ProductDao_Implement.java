@@ -3,6 +3,7 @@ package com.timlin.springboot_mall.dao.impl;
 import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.dao.ProductDao;
 import com.timlin.springboot_mall.model.Product;
+import com.timlin.springboot_mall.others.ProductQueryParams;
 import com.timlin.springboot_mall.others.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -24,18 +25,18 @@ public class ProductDao_Implement implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "select * from product where 1=1";
 
         Map<String, Object> map = new HashMap<>();
 
-        if (category != null) {
+        if (productQueryParams.getCategory() != null) {
             sql += " AND category = :category";
-            map.put("category", category.name());
+            map.put("category", productQueryParams.getCategory().name());
         }
-        if (search != null) {
+        if (productQueryParams.getSearch() != null) {
             sql += " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 

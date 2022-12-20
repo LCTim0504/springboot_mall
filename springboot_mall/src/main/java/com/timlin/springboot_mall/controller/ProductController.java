@@ -2,6 +2,7 @@ package com.timlin.springboot_mall.controller;
 
 import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.model.Product;
+import com.timlin.springboot_mall.others.ProductQueryParams;
 import com.timlin.springboot_mall.others.ProductRequest;
 import com.timlin.springboot_mall.service.ProductService;
 import jakarta.validation.Valid;
@@ -24,7 +25,12 @@ public class ProductController {
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search
             ) {
-        List<Product> productList = productService.getProducts(category, search);
+        //新增一個class打包傳遞進來的參數
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+        List<Product> productList = productService.getProducts(productQueryParams);
         //null也是一個結果，所以不用判斷
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
