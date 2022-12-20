@@ -9,11 +9,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    //查詢功能
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts() {
+        List<Product> productList = productService.getProducts();
+        //null也是一個結果，所以不用判斷
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
