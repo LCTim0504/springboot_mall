@@ -1,5 +1,6 @@
 package com.timlin.springboot_mall.controller;
 
+import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.model.Product;
 import com.timlin.springboot_mall.others.ProductRequest;
 import com.timlin.springboot_mall.service.ProductService;
@@ -19,8 +20,11 @@ public class ProductController {
 
     //查詢功能
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> productList = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+            ) {
+        List<Product> productList = productService.getProducts(category, search);
         //null也是一個結果，所以不用判斷
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
