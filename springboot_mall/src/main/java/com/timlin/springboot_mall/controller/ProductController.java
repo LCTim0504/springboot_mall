@@ -5,6 +5,7 @@ import com.timlin.springboot_mall.model.Product;
 import com.timlin.springboot_mall.others.ProductQueryParams;
 import com.timlin.springboot_mall.others.ProductRequest;
 import com.timlin.springboot_mall.service.ProductService;
+import com.timlin.springboot_mall.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -24,7 +25,7 @@ public class ProductController {
 
     //查詢功能
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             //篩選
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -44,9 +45,21 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
+        //取得product List
         List<Product> productList = productService.getProducts(productQueryParams);
+
+        //取得product總數
+        Integer total=productService.countProduct(productQueryParams);
+
+        //分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResult(productList);
+
         //null也是一個結果，所以不用判斷
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     @GetMapping("/products/{productId}")
