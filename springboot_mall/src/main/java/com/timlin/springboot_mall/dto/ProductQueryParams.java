@@ -1,4 +1,4 @@
-package com.timlin.springboot_mall.others;
+package com.timlin.springboot_mall.dto;
 
 import com.timlin.springboot_mall.constant.ProductCategory;
 

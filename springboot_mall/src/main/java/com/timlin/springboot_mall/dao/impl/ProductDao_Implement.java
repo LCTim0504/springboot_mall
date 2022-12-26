@@ -1,10 +1,9 @@
 package com.timlin.springboot_mall.dao.impl;
 
-import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.dao.ProductDao;
 import com.timlin.springboot_mall.model.Product;
-import com.timlin.springboot_mall.others.ProductQueryParams;
-import com.timlin.springboot_mall.others.ProductRequest;
+import com.timlin.springboot_mall.dto.ProductQueryParams;
+import com.timlin.springboot_mall.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -84,12 +83,12 @@ public class ProductDao_Implement implements ProductDao {
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
-        return productList != null ? productList.get(0) : null;
+        return productList.size() != 0 ? productList.get(0) : null;
     }
 
     @Override
     public Integer createProduct(ProductRequest productRequest) {
-        String sql = "INSERT INTO mall.product" +
+        String sql = "INSERT INTO product" +
                 "(product_name," +
                 "category," +
                 "image_url," +
@@ -131,7 +130,7 @@ public class ProductDao_Implement implements ProductDao {
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
 
-        String sql = "UPDATE mall.product SET " +
+        String sql = "UPDATE product SET " +
                 "product_name = :product_name," +
                 "category = :category," +
                 "image_url = :image_url," +
@@ -143,7 +142,6 @@ public class ProductDao_Implement implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
         map.put("product_id", productId);
-
         map.put("product_name", productRequest.getProductName());
         map.put("category", productRequest.getCategory().toString()); //!!!!!!
         map.put("image_url", productRequest.getImageUrl());

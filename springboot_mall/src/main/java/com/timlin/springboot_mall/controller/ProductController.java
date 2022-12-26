@@ -2,8 +2,8 @@ package com.timlin.springboot_mall.controller;
 
 import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.model.Product;
-import com.timlin.springboot_mall.others.ProductQueryParams;
-import com.timlin.springboot_mall.others.ProductRequest;
+import com.timlin.springboot_mall.dto.ProductQueryParams;
+import com.timlin.springboot_mall.dto.ProductRequest;
 import com.timlin.springboot_mall.service.ProductService;
 import com.timlin.springboot_mall.util.Page;
 import jakarta.validation.Valid;
@@ -56,7 +56,7 @@ public class ProductController {
         page.setLimit(limit);
         page.setOffset(offset);
         page.setTotal(total);
-        page.setResult(productList);
+        page.setResults(productList);
 
         //null也是一個結果，所以不用判斷
         return ResponseEntity.status(HttpStatus.OK).body(page);
@@ -66,9 +66,11 @@ public class ProductController {
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
 
-        return product != null ?
-                ResponseEntity.status(HttpStatus.OK).body(product) :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(product);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PostMapping("/products")

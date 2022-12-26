@@ -1,9 +1,8 @@
 package com.timlin.springboot_mall.service;
 
-import com.timlin.springboot_mall.constant.ProductCategory;
 import com.timlin.springboot_mall.model.Product;
-import com.timlin.springboot_mall.others.ProductQueryParams;
-import com.timlin.springboot_mall.others.ProductRequest;
+import com.timlin.springboot_mall.dto.ProductQueryParams;
+import com.timlin.springboot_mall.dto.ProductRequest;
 
 import java.util.List;
 
