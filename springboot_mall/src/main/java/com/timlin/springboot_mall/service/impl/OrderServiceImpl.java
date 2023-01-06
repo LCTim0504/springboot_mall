@@ -4,6 +4,7 @@ import com.timlin.springboot_mall.dao.OrderDao;
 import com.timlin.springboot_mall.dao.ProductDao;
 import com.timlin.springboot_mall.dto.BuyItem;
 import com.timlin.springboot_mall.dto.CreateOrderRequest;
+import com.timlin.springboot_mall.model.Order;
 import com.timlin.springboot_mall.model.OrderItem;
 import com.timlin.springboot_mall.model.Product;
 import com.timlin.springboot_mall.service.OrderService;
@@ -49,5 +50,17 @@ public class OrderServiceImpl implements OrderService {
         orderDao.createOrderItems(orderId, orderItemList);
 
         return orderId;
+    }
+
+    @Override
+    public Order getOrderById(Integer orderId) {
+
+        Order order = orderDao.getOrderById(orderId);
+
+        List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(orderId);
+
+        order.setOrderItemList(orderItemList);
+
+        return order;
     }
 }

@@ -1,7 +1,10 @@
 package com.timlin.springboot_mall.dao.impl;
 
 import com.timlin.springboot_mall.dao.OrderDao;
+import com.timlin.springboot_mall.model.Order;
 import com.timlin.springboot_mall.model.OrderItem;
+import com.timlin.springboot_mall.rowmapper.OrderItemRowMapper;
+import com.timlin.springboot_mall.rowmapper.OrderRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -77,5 +80,28 @@ public class OrderDaoImpl implements OrderDao {
             parameterSources[i].addValue("amount", orderItem.getAmount());
         }
         namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
+    }
+
+    @Override
+    public Order getOrderById(Integer orderId) {
+        String sql = "select * from `order` where order_id = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+
+        return orderList.size() > 0 ? orderList.get(0) : null;
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
+        String sql = "select * from order_item as oi left join product as p " +
+                "on oi.product_id = p.product_id where oi.order_id = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+
+        List<OrderItem> orderItemList = namedParameterJdbcTemplate.query(sql, map, new OrderItemRowMapper());
+
+        return orderItemList;
     }
 }

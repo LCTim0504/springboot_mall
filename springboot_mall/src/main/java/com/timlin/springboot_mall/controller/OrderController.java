@@ -2,6 +2,7 @@ package com.timlin.springboot_mall.controller;
 
 import com.timlin.springboot_mall.dto.CreateOrderRequest;
 import com.timlin.springboot_mall.dto.ProductRequest;
+import com.timlin.springboot_mall.model.Order;
 import com.timlin.springboot_mall.model.Product;
 import com.timlin.springboot_mall.service.OrderService;
 import jakarta.validation.Valid;
@@ -20,11 +21,13 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/users/{userId}/orders")
-    public ResponseEntity<Integer> createProduct(@PathVariable Integer userId,
+    public ResponseEntity<Order> createProduct(@PathVariable Integer userId,
                                            @RequestBody @Valid CreateOrderRequest createOrderRequest) {
 
         Integer orderId = orderService.createOrder(userId, createOrderRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+        Order order = orderService.getOrderById(orderId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 }
