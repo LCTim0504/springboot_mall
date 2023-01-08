@@ -1,6 +1,7 @@
 package com.timlin.springboot_mall.dao.impl;
 
 import com.timlin.springboot_mall.dao.OrderDao;
+import com.timlin.springboot_mall.dto.OrderQueryParams;
 import com.timlin.springboot_mall.model.Order;
 import com.timlin.springboot_mall.model.OrderItem;
 import com.timlin.springboot_mall.rowmapper.OrderItemRowMapper;
@@ -103,5 +104,47 @@ public class OrderDaoImpl implements OrderDao {
         List<OrderItem> orderItemList = namedParameterJdbcTemplate.query(sql, map, new OrderItemRowMapper());
 
         return orderItemList;
+    }
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        String sql = "select count(*) from `order` where 1 = 1 ";
+
+        Map<String, Object> map = new HashMap<>();
+
+        sql = addFilteringSql(sql, map, orderQueryParams);
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+
+        return total;
+    }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        String sql = "select * from `order` where 1 = 1 ";
+
+        Map<String, Object> map = new HashMap<>();
+
+        // 條件篩選
+        sql = addFilteringSql(sql, map, orderQueryParams);
+        //排序
+        sql += " order by created_date desc";
+        //分頁
+        sql += " limit :limit offset :offset";
+
+        map.put("limit", orderQueryParams.getLimit());
+        map.put("offset", orderQueryParams.getOffset());
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+        return orderList;
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams) {
+
+        if (orderQueryParams.getUserId() != null) {
+            sql += " and user_id = :user_id";
+            map.put("user_id", orderQueryParams.getUserId());
+        }
+        return sql;
     }
 }

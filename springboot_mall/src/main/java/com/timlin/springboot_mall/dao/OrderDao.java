@@ -1,6 +1,7 @@
 package com.timlin.springboot_mall.dao;
 
 import com.timlin.springboot_mall.dto.CreateOrderRequest;
+import com.timlin.springboot_mall.dto.OrderQueryParams;
 import com.timlin.springboot_mall.model.Order;
 import com.timlin.springboot_mall.model.OrderItem;
 
@@ -12,4 +13,7 @@ public interface OrderDao {
 
     Order getOrderById(Integer orderId);
     List<OrderItem> getOrderItemsByOrderId(Integer orderId);
+    Integer countOrder(OrderQueryParams orderQueryParams);
+    List<Order> getOrders(OrderQueryParams orderQueryParams);
+
 }
